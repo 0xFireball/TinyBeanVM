@@ -11,3 +11,7 @@ added memory.
 memory addressed with $1 to access memory[1].
 memory is 4096B, or 4KiB.
 dmpmem 0,0 to dump memory, again, 0,0 are irrelevant.
+plan to add stack in next version
+v0.1.3
+add stack.
+it works.

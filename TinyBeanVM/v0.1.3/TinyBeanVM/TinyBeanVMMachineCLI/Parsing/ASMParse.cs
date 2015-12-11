@@ -12,6 +12,7 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 	/// </summary>
 	public class ASMParse
 	{
+		//static short offset = 0;
 		static Bictionary<string, short[]> opcodes = new Bictionary<string, short[]>()
 		{
 			{ "lbl:", new short[]{ 0x005f, 0x0000} },
@@ -20,6 +21,9 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 			{ "dmpmem", new short[]{0x0000, 0x1101} }, //dump memory (debugging)
 			{ "lda", new short[]{0x0000, 0x1110} }, //load into A register
 			{ "mov", new short[]{0x0000, 0x1111} }, //mov value to location
+			{ "push", new short[]{0x0000, 0x1112} }, //push value
+			{ "pop", new short[]{0x0000, 0x1113} }, //pop value
+			{ "bcall", new short[]{0x0000, 0x1114} }, //call built-in code
 		};
 		static Dictionary<short, int> RegisterIds = new Dictionary<short, int>()
 		{
@@ -72,6 +76,10 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 			{
 				return 2; //memory address
 			}
+			if (by[0] == 0x000f) //name
+			{
+				return 3; //name
+			}
 			
 			return -1; //unknown type
 		}
@@ -101,19 +109,28 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 					return new short[] {0x0001, 0x1003};
 				default:
 					bool memloc = s.StartsWith("$"); //$ to access RAM
-					if (!memloc)
+					bool name = s.StartsWith("*");
+					if (!memloc && !name)
 					{
 						short d = 0x0000;
-						short.TryParse(s, out d);
+						bool x = short.TryParse(s, out d);
 						return new short[]{ 0x0002, d};
 					}
-					else
+					else if (memloc && !name)
 					{
 						string s1 = s.Substring(1);
 						short d = 0x0000;
-						short.TryParse(s1, out d);
+						bool x = short.TryParse(s1, out d);
 						return new short[]{ 0x0003, d};
 					}
+					else if (name) //0x000f - name type
+					{
+						string s1 = s.Substring(1);
+						short d = 0x0000;
+						bool x = short.TryParse(s1, out d);
+						return new short[]{ 0x000f, d};
+					}
+					return opcodes["nop"];
 			}
 		}
 	}
