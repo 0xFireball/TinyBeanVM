@@ -337,7 +337,6 @@ namespace TinyBeanVMMachineCLI
 				while (stack.stack.Count > 0)
 				{
 					short nc = stack.stack.Pop(); //read char from stack
-					Console.WriteLine(nc);
 					if (nc==-1)
 					{
 						break;

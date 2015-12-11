@@ -101,12 +101,15 @@ namespace TinyBeanVMAssemblerCLI
 			{
 				//Parse instruction
 				string[] opc = reverseStringFormat(" {0} {1},{2}", c);
-				short[] bop = ASMParse.s2opc(opc[0]);
-				short[] b1 = ASMParse.r2by(opc[1]);
-				short[] b2 = ASMParse.r2by(opc[2]);
-				rv.AddRange(bop);
-				rv.AddRange(b1);
-				rv.AddRange(b2);
+				if (opc.Length>0)
+				{
+					short[] bop = ASMParse.s2opc(opc[0]);
+					short[] b1 = ASMParse.r2by(opc[1]);
+					short[] b2 = ASMParse.r2by(opc[2]);
+					rv.AddRange(bop);
+					rv.AddRange(b1);
+					rv.AddRange(b2);
+				}
 			}
 			return rv.ToArray();
 		}
