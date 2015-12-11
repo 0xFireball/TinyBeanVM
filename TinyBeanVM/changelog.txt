@@ -1,0 +1,13 @@
+v0.1:
+basic parser using byte[]
+v0.1.1
+realized byte was only 0-255
+so rewrote using shorts
+working ASM with 3 commands: lda,mov, and dmpreg
+dmpreg 0,0 (the 0,0 is irrelevant, dumps the registers to console)
+plan to add memory in the next version
+v0.1.2
+added memory.
+memory addressed with $1 to access memory[1].
+memory is 4096B, or 4KiB.
+dmpmem 0,0 to dump memory, again, 0,0 are irrelevant.

@@ -1,0 +1,2 @@
+start:
+ lda 3,
