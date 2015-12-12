@@ -290,6 +290,53 @@ namespace TinyBeanVMMachineCLI
 				}
 			}
 			
+			if ( n1.SequenceEqual(ASMParse.s2opc("cmp")) ) //cmp
+			{
+				int by_r_type2 = ASMParse.by_r_type(n2);
+				int mloc2=-1; //location of destination operand
+				short v2 = -1;
+				if (by_r_type2 == 0) //literal op -> ok
+				{
+					mloc2 = ASMParse.lit2sh(n2);
+					v2 = (short)mloc2;
+				}
+				if (by_r_type2 == 1) //register op
+				{
+					mloc2 = ASMParse.rlit2sh(n2);
+					v2=(short)registers.GetById(mloc2);
+				}
+				if (by_r_type2 == 2) //memory address op
+				{
+					mloc2 = ASMParse.lit2sh(n2);
+					v2=(short)memory.memory[mloc2];
+				}
+				
+				int by_r_type3 = ASMParse.by_r_type(n3);
+				short v3=-1;
+				if (by_r_type3 == 0)
+				{
+					v3 = ASMParse.lit2sh(n3); //get value of literal
+				}				
+				if (by_r_type3 == 1)
+				{
+					v3 = registers.GetById(ASMParse.rlit2sh(n3)); //get value of register
+				}
+				if (by_r_type3 == 2) //get memory address value
+				{
+					v3 = memory.memory[ASMParse.lit2sh(n3)]; //get value at address
+				}
+				
+				//set z flag accordingly
+				if (v2==v3)
+				{
+					registers.Z = 0;
+				}
+				else
+				{
+					registers.Z = (short)(v2-v3); //is this right?
+				}
+			}
+			
 			if ( n1.SequenceEqual(ASMParse.s2opc("push")) ) //push
 			{
 				int by_r_type2 = ASMParse.by_r_type(n2);
@@ -366,6 +413,38 @@ namespace TinyBeanVMMachineCLI
 					throw new TinyBeanVMInvalidOperationException("Cannot jump to invalid location. [jmp]");
 				}
 			}
+			if (  n1.SequenceEqual(ASMParse.s2opc("jz")) )
+			{
+				int by_r_type2 = ASMParse.by_r_type(n2);
+				if (by_r_type2==4)
+				{
+					short lbid = ASMParse.lit2sh(n2);
+					if (registers.Z==0)
+						cep = labels[lbid];
+					//Console.WriteLine("Jump target: {0} Jump Address: {0}", lbid, cep);
+				}
+				else
+				{
+					throw new TinyBeanVMInvalidOperationException("Cannot jump to invalid location. [jz]");
+				}
+			}
+			if (  n1.SequenceEqual(ASMParse.s2opc("jnz")) )
+			{
+				int by_r_type2 = ASMParse.by_r_type(n2);
+				if (by_r_type2==4)
+				{
+					short lbid = ASMParse.lit2sh(n2);
+					if (registers.Z!=0)
+						cep = labels[lbid];
+					//Console.WriteLine("Jump target: {0} Jump Address: {0}", lbid, cep);
+				}
+				else
+				{
+					throw new TinyBeanVMInvalidOperationException("Cannot jump to invalid location. [jnz]");
+				}
+			}
+			
+			
 			
 			if ( n1.SequenceEqual(ASMParse.s2opc("dmpreg")) ) //dmpreg
 			{
@@ -374,6 +453,8 @@ namespace TinyBeanVMMachineCLI
 				Console.WriteLine("B: {0}",registers.B);
 				Console.WriteLine("T: {0}",registers.T);
 				Console.WriteLine("X: {0}",registers.X);
+				Console.WriteLine("Z: {0}",registers.Z);
+				Console.WriteLine("C: {0}",registers.C);
 			}
 			if ( n1.SequenceEqual(ASMParse.s2opc("dmpmem")) ) //dmpreg
 			{

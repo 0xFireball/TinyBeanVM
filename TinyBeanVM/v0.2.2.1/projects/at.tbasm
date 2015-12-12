@@ -1,0 +1,6 @@
+start:
+ mov a,0
+loop:
+ add a,1
+ dmpreg
+ jmp :loop
