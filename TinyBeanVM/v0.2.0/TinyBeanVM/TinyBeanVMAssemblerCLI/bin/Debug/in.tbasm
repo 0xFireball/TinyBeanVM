@@ -1,5 +1,0 @@
-bababa:
- dmpreg
-start:
- mov a,1
- jmp :bababa
