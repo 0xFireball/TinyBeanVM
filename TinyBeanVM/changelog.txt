@@ -41,3 +41,6 @@ v0.2.1.2
 add sub command
 PLAN TO ADD JZ AND JNZ seriously!
 ADD CMP!!! COME ON!
+v0.2.2
+(finally)
+added CMP, JZ, JNZ
