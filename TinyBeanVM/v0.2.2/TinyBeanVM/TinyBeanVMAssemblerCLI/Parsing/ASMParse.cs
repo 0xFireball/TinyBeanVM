@@ -13,7 +13,7 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 	public class ASMParse
 	{
 		static short lblnum = 0;
-		static Bictionary<string, short[]> opcodes = new Bictionary<string, short[]>()
+		static Dictionary<string, short[]> opcodes = new Bictionary<string, short[]>()
 		{
 			{ "lbl:", new short[]{ 0x005f, 0x0000} },
 			{ "nop", new short[]{ 0x0000, 0x000f} },
@@ -30,6 +30,7 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 			{ "jz", new short[]{0x0000, 0x1118} }, //jump if Z register = 0
 			{ "jnz", new short[]{0x0000, 0x1119} }, //jump if Z register NOT = 0
 			{ "cmp", new short[]{0x0000, 0x111a} }, //set Z to 0 if operands equal, otherwise set to sub
+			{ "lma", new short[]{0x0000, 0x111b} }, //load A into location
 		};
 		static Dictionary<short, int> RegisterIds = new Dictionary<short, int>()
 		{
@@ -58,7 +59,8 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 		public static short[] s2opc(string s)
 		{
 			//0x0000 - instruction
-			return opcodes[s];
+			return new short[]{0x0000,0x0000};
+			//opcodes[s];
 			/*
 			switch (s)
 			{

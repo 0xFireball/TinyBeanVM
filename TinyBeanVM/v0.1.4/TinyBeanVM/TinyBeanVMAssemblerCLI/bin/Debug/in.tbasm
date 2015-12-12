@@ -1,0 +1,4 @@
+start:
+ bcall *2,
+ bcall *1,
+ dmpreg 0,0

@@ -27,9 +27,7 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 			{ "jmp", new short[]{0x0000, 0x1115} }, //jump to label
 			{ "add", new short[]{0x0000, 0x1116} }, //add to register
 			{ "sub", new short[]{0x0000, 0x1117} }, //subtract from register
-			{ "jz", new short[]{0x0000, 0x1118} }, //jump if Z register = 0
-			{ "jnz", new short[]{0x0000, 0x1119} }, //jump if Z register NOT = 0
-			{ "cmp", new short[]{0x0000, 0x111a} }, //set Z to 0 if operands equal, otherwise set to sub
+			{ "lma", new short[]{0x0000, 0x1118} }, //load A into location
 		};
 		static Dictionary<short, int> RegisterIds = new Dictionary<short, int>()
 		{

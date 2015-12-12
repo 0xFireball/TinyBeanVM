@@ -1,0 +1,12 @@
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.1.4\TinyBeanVM\TinyBeanVMQScript\obj\Debug\TinyBeanVMQScript.csprojResolveAssemblyReference.cache
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.1.4\TinyBeanVM\TinyBeanVMQScript\bin\Debug\TinyBeanVMQScript.exe.config
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.1.4\TinyBeanVM\TinyBeanVMQScript\bin\Debug\TinyBeanVMQScript.exe
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.1.4\TinyBeanVM\TinyBeanVMQScript\bin\Debug\TinyBeanVMQScript.pdb
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.1.4\TinyBeanVM\TinyBeanVMQScript\obj\Debug\TinyBeanVMQScript.exe
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.1.4\TinyBeanVM\TinyBeanVMQScript\obj\Debug\TinyBeanVMQScript.pdb
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.2.0\TinyBeanVM\TinyBeanVMQScript\bin\Debug\TinyBeanVMQScript.exe.config
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.2.0\TinyBeanVM\TinyBeanVMQScript\bin\Debug\TinyBeanVMQScript.exe
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.2.0\TinyBeanVM\TinyBeanVMQScript\bin\Debug\TinyBeanVMQScript.pdb
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.2.0\TinyBeanVM\TinyBeanVMQScript\obj\Debug\TinyBeanVMQScript.csprojResolveAssemblyReference.cache
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.2.0\TinyBeanVM\TinyBeanVMQScript\obj\Debug\TinyBeanVMQScript.exe
+D:\nihal\Programs\C#\VM\TinyBeanVM\v0.2.0\TinyBeanVM\TinyBeanVMQScript\obj\Debug\TinyBeanVMQScript.pdb

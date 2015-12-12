@@ -44,3 +44,6 @@ ADD CMP!!! COME ON!
 v0.2.2
 (finally)
 added CMP, JZ, JNZ
+added lma - load a into a location in memory.
+v0.2.2.1
+bug fixes
