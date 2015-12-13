@@ -47,3 +47,7 @@ added CMP, JZ, JNZ
 added lma - load a into a location in memory.
 v0.2.2.1
 weird bug fixes
+v0.2.3
+fix bugs
+v0.2.5
+EXIT <exit code> command.
