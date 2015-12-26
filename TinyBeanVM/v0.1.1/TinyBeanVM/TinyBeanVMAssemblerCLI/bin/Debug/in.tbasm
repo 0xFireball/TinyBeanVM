@@ -1,5 +1,0 @@
-start:
- lda 3,
- mov x,a
- mov b,2
- dmpreg 0,0

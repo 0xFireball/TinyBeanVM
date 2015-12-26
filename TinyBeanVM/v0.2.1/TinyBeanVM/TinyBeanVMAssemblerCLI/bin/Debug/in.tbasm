@@ -1,9 +1,0 @@
-bababa:
- dmpreg
-dododo:
- mov a,1
- jmp :bababa
-start:
- mov a,5
- add a,-6
- dmpreg

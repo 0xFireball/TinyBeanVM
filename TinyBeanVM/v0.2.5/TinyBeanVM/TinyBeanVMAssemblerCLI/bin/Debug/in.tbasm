@@ -1,7 +1,0 @@
-finish:
- exit 0
-main:
- jmp :finish
-start:
- mov a,0
- jmp :main

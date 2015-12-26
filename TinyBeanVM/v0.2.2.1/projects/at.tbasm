@@ -1,7 +1,0 @@
-start:
- mov a,0
-loop:
- add a,1
- cmp a,5
- jnz :loop
- dmpreg
