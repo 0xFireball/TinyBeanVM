@@ -51,3 +51,10 @@ v0.2.3
 fix bugs
 v0.2.5
 EXIT <exit code> command.
+v0.3.0
+changed major version; no longer backwards compatiable.
+NEW COMMANDS:
+ .org <memory counter location start>    {WITH THE SPACE}
+ .mem 'some string',0          {loads some memory starting at .org location. .org is incremented by the length of the string+1}
+CHANGES:
+the print function (bcall *1) now prints from memory, not the stack.
