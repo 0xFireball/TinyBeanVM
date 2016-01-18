@@ -1,0 +1,16 @@
+loop1:
+ .org 0
+ mov b,1
+ mov $0,7
+loop2:
+ mov a,b
+ add b,1
+ bcall *1
+ cmp $0,7
+ jnz :loop2
+ 
+start:
+ .org 0
+ .mem 'I Like Pie!',0
+ bcall *1
+ jmp :loop
