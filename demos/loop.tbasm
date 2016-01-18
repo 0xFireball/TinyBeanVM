@@ -8,7 +8,6 @@ loop2:
  bcall *1
  cmp $0,7
  jnz :loop2
- 
 start:
  .org 0
  .mem 'I Like Pie!',0

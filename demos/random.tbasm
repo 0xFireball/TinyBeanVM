@@ -1,0 +1,14 @@
+start:
+ .org 0
+ .mem 'I Like Pie!',0
+ bcall *1
+ lda 1
+ mov $0,a
+ .org 0
+ mov $1,a
+ mov b,a
+ cmp $0,b
+ lma b
+ mov t,$0
+ .mem 'bye.',0
+ bcall *1
