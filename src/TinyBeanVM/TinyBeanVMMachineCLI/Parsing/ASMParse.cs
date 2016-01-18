@@ -41,6 +41,22 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 			{0x1002,3},
 			{0x1003,4},
 		};
+		
+		public static string get_rgNfromId(short id)
+		{
+			switch (id)
+			{
+				case 1:
+					return "A";
+				case 2:
+					return "B";
+				case 3:
+					return "T";
+				case 4:
+					return "X";
+			}
+			return "<Unknown Register>";
+		}
 
 		public static short[] lbl(short count)
 		{
@@ -60,10 +76,26 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 		}
 		public static short[] s2opc(string s)
 		{
-			//0x0000 - instruction
-			//return new short[] {0,0};
-			//Console.WriteLine(opcodes.ContainsKey(s));
 			return opcodes[s];
+		}
+		public static short[] s2opc(string s, out int error)
+		{
+			if (s==""||s==" ")
+			{
+				error = 0;
+				return new short[0];
+			}
+			if (opcodes.ContainsKey(s))
+			{
+				error = 0;
+				return opcodes[s];
+			}
+			else
+			{
+				error = -1;
+				Console.WriteLine("Error: Instruction not found: {0}",s);
+				return new short[0];
+			}
 			
 		}
 		public static string opc2s(short[] opc)

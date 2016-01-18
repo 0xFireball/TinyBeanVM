@@ -58,3 +58,5 @@ NEW COMMANDS:
  .mem 'some string',0          {loads some memory starting at .org location. .org is incremented by the length of the string+1}
 CHANGES:
 the print function (bcall *1) now prints from memory, not the stack.
+v0.3.1
+-Built in debugger mode and dissassembler mode, use -debug and -disassemble. Disassemble mode includes debug mode.

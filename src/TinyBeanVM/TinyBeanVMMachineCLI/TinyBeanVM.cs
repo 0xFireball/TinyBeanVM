@@ -30,7 +30,28 @@ namespace TinyBeanVMMachineCLI
 		BinaryReader bCode;
 		TinyBeanVMOutputType outputType;
 		Dictionary<short,int> labels;
+		int debugLevel;
 		int cep = -1; //current excecution point
+		public void DebugS(string str)
+		{
+			if (debugLevel>0)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.Write("[DEBUG] ");
+				Console.WriteLine(str);
+				Console.ForegroundColor = ConsoleColor.White;
+			}
+		}
+		public void DisA(string str)
+		{
+			if (debugLevel>1)
+			{
+				Console.ForegroundColor = ConsoleColor.Yellow;
+				Console.Write("[DISASM] ");
+				Console.WriteLine(str);
+				Console.ForegroundColor = ConsoleColor.White;
+			}
+		}
 		public TinyBeanVM(TinyBeanVMOutputType vmOutputType=TinyBeanVMOutputType.Console)
 		{
 			registers = new SystemRegisters(); //Registers
@@ -38,9 +59,12 @@ namespace TinyBeanVMMachineCLI
 			stack = new SystemStack(256); //stack of size 256
 			outputType = vmOutputType;
 		}
-		public void ExecuteCode(MemoryStream mCode)
+		public void ExecuteCode(MemoryStream mCode,int debugLevel)
 		{
+			DebugS("Starting VM...");
+			this.debugLevel = debugLevel;
 			bCode = new BinaryReader(mCode);
+			DebugS("Checking Header...");
 			CheckHeader();
 		}
 		public void WriteLine(params object[] args)
@@ -57,9 +81,12 @@ namespace TinyBeanVMMachineCLI
 				bool validTBVM = magicshorts[i] == rBy;
 				if (!validTBVM)
 				{
+					DebugS("Bad header.");
 					throw new TinyBeanVMException("Incorrect TinyBeanVM Header!");
 				}
 			}
+			DebugS("Valid header.");
+			DebugS("Reading bytecode...");
 			List<short> __b = new List<short>();
 			short[] bc;
 			while (bCode.BaseStream.Position != bCode.BaseStream.Length)
@@ -68,24 +95,31 @@ namespace TinyBeanVMMachineCLI
 			}
 			bc = __b.ToArray();
 			#if DEBUG
+			DebugS("Starting Parse...Debug Mode...");
 			Parse(bc);
 			#else
 			try
 			{
+				DebugS("Starting Parse...");
 				Parse(bc);
 			}
 			catch (Exception ex)
 			{
+				DebugS("Unhandled Internal Exception: "+ex.ToString());
 				throw new TinyBeanVMException(String.Format("TinyBeanVM Excecution Exception: {0}",ex.ToString()));
 			}
 			#endif
+			DebugS("End of code - VM Exit 0");
 		}
 		private void Parse(short[] bc)
 		{
 			cep = 0; //reset Current Execution Point
 			labels = new Dictionary<short,int>();
-			
+			DebugS("Running pass 1 - Flow Analysis");
 			//Pass 1 - flow analysis
+			DebugS(string.Format("Bytecode Length: {0}",bc.Length));
+			if (bc.Length%6!=0)
+				DebugS("Warning: Bytecode length is of invalid length. It must be divisible by 6.");
 			while (cep<bc.Length) //loop through the code
 			{
 				short[] n1 = new short[] {bc[cep],bc[cep+1]};
@@ -106,9 +140,10 @@ namespace TinyBeanVMMachineCLI
 				}
 			}
 			//Pass 1 complete
-			
+			DebugS("Pass 1 complete");
 			cep = 0; //reset Current Execution Point
 			cep = labels[0];
+			DebugS("Running Pass 2 - On the fly interpretation");
 			//Pass 2 - on-the-fly interpretation
 			while (cep<bc.Length) //loop through the code
 			{
@@ -130,17 +165,47 @@ namespace TinyBeanVMMachineCLI
 					cep+=6;
 				}
 			}
+			DebugS("Pass 2 Complete");
 		}
 		private void SystemLimits()
 		{
 			if (stack.stack.Count > stack.MaxSize)
 			{
-				throw new TinyBeanVMException("StackOverflowException - The stack has overflowed.");
+				throw new TinyBeanVMException("TinyBeanStackOverflowException - The stack has overflowed.");
 			}
+		}
+		private string IntelliParse(short[] value)
+		{
+			string rv;
+			int by_r_type2 = ASMParse.by_r_type(value);
+			if (by_r_type2 == 0)
+			{
+				rv = ASMParse.lit2sh(value).ToString();
+			}
+			else if (by_r_type2 == 1)
+			{
+				rv = ASMParse.get_rgNfromId(registers.GetById(ASMParse.rlit2sh(value)));
+			}
+			else if (by_r_type2 == 2) //memory address target
+			{
+				rv = "$"+ASMParse.lit2sh(value).ToString();;
+			}
+			else if (by_r_type2==4)
+			{
+				short lbid = ASMParse.lit2sh(value);
+				rv = ":"+lbid.ToString();
+			}
+			else
+			{
+				rv = "<UNKOWN SYMBOL>";
+			}
+			return rv;
 		}
 		private void ExecuteLine(short[] n1, short[] n2, short[] n3)
 		{
 			string cmdlit = ASMParse.opc2s(n1); //OPCode to string
+			DisA(cmdlit+" "+IntelliParse(n2)+","+IntelliParse(n3));
+			
 			//WriteLine("Address: {0} - {1}", cep, cmdlit);
 			if ( n1.SequenceEqual(ASMParse.s2opc("lda")) ) //lda
 			{
@@ -437,7 +502,7 @@ namespace TinyBeanVMMachineCLI
 				{
 					short lbid = ASMParse.lit2sh(n2);
 					cep = labels[lbid];
-					//WriteLine("Jump target: {0} Jump Address: {0}", lbid, cep);
+					DisA(string.Format("Jump target: {0} Jump Address: {1}", lbid, cep));
 				}
 				else
 				{

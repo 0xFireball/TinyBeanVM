@@ -41,6 +41,22 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 			{0x1002,3},
 			{0x1003,4},
 		};
+		
+		public static string get_rgNfromId(short id)
+		{
+			switch (id)
+			{
+				case 1:
+					return "A";
+				case 2:
+					return "B";
+				case 3:
+					return "T";
+				case 4:
+					return "X";
+			}
+			return "<Unknown Register>";
+		}
 
 		public static short[] lbl(short count)
 		{
@@ -57,6 +73,10 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 		public static short[] nop()
 		{
 			return opcodes["nop"]; //nop		
+		}
+		public static short[] s2opc(string s)
+		{
+			return opcodes[s];
 		}
 		public static short[] s2opc(string s, out int error)
 		{
