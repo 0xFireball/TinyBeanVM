@@ -57,17 +57,21 @@ namespace TinyBeanVMAssemblerCLI
 				cLines.Add(line);
 		    }
 			code = cLines.ToArray();
+			Console.Write("Writing header...");
 			//Magic shorts
 			short[] magicshorts = new short[] {(short)'T', (short)'B', (short)'V', (short)'M'};
 			for (int i = 0; i < magicshorts.Length; i++)
 			{
 				outputStream.Write(magicshorts[i]);
 			}
+			Console.WriteLine("Done");
+			Console.WriteLine("Begin parsing code { >");
 			short[] pO = Parse();
 			for (int i = 0; i<pO.Length; i++)
 			{
 				outputStream.Write(pO[i]);
 			}
+			Console.WriteLine("< } Done Parsing Code");
 			/*
 			output = new MemoryStream();
 			outputStream = new BinaryWriter(output);
@@ -138,15 +142,21 @@ namespace TinyBeanVMAssemblerCLI
 		private short[] Parse()
 		{
 			List<short> outputBy = new List<short>();
+			Console.Write("Running preprocessor..");
 			RunPreprocessor(); //preprocess special items
-			foreach (string line in code)
+			Console.WriteLine(".Done");
+			Console.Write("Begin parsing {0} lines in memory...",code.Length);
+			for (int i = 0;i<code.Length;i++)
 			{
-				outputBy.AddRange(ParseLine(line));
+				string line = code[i];
+				outputBy.AddRange(ParseLine(line,i));
 			}
+			Console.WriteLine("Done.");
 			return outputBy.ToArray();
 		}
-		private short[] ParseLine(string c)
+		private short[] ParseLine(string c, int line)
 		{
+			int error=0;
 			List<short> rv = new List<short>();
 			bool label = false;
 			if (c.EndsWith(":"))
@@ -169,23 +179,23 @@ namespace TinyBeanVMAssemblerCLI
 				{
 					opc = reverseStringFormat(" {0}", c);
 				}
-				short[] bop = ASMParse.s2opc("nop");
+				short[] bop = ASMParse.s2opc("nop",out error);
 				short[] b1 = ASMParse.r2by("nop");
 				short[] b2 = ASMParse.r2by("nop");
 				if (opc.Length>=3)
 				{
-					bop = ASMParse.s2opc(opc[0]);
+					bop = ASMParse.s2opc(opc[0],out error);
 					b1 = ASMParse.r2by(opc[1]);
 					b2 = ASMParse.r2by(opc[2]);
 				}
 				else if (opc.Length>=2)
 				{
-					bop = ASMParse.s2opc(opc[0]);
+					bop = ASMParse.s2opc(opc[0],out error);
 					b1 = ASMParse.r2by(opc[1]);
 				}
 				else if (opc.Length>=1)
 				{
-					bop = ASMParse.s2opc(opc[0]);
+					bop = ASMParse.s2opc(opc[0],out error);
 				}
 				rv.AddRange(bop);
 				rv.AddRange(b1);
@@ -212,6 +222,10 @@ namespace TinyBeanVMAssemblerCLI
 				
 				lblId++;
 				rv.AddRange(lb); //6 shorts
+			}
+			if (error!=0)
+			{
+				Console.WriteLine("Error on line {0}",line);
 			}
 			return rv.ToArray();
 		}

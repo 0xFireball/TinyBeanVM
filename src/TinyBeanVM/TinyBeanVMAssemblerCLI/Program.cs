@@ -18,7 +18,7 @@ namespace TinyBeanVMAssemblerCLI
 			}
 			string inputFile = args[0];
 			string outputFile = args[1];
-			
+			Console.WriteLine("Opening file...");
 			MemoryStream outputStream = new TinyBeanVM().AssembleCode(new StreamReader(inputFile));
 			FileStream outputFS = new FileStream(outputFile, FileMode.Create);
 			outputStream.Position = 0;

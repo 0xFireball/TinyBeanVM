@@ -58,12 +58,24 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 		{
 			return opcodes["nop"]; //nop		
 		}
-		public static short[] s2opc(string s)
+		public static short[] s2opc(string s, out int error)
 		{
-			//0x0000 - instruction
-			//return new short[] {0,0};
-			//Console.WriteLine(opcodes.ContainsKey(s));
-			return opcodes[s];
+			if (s=="")
+			{
+				error = -1;
+				return new short[0];
+			}
+			if (opcodes.ContainsKey(s))
+			{
+				error = 0;
+				return opcodes[s];
+			}
+			else
+			{
+				error = -1;
+				Console.WriteLine("Error: Instruction not found: {0}",s);
+				return new short[0];
+			}
 			
 		}
 		public static string opc2s(short[] opc)
