@@ -60,9 +60,9 @@ namespace TinyBeanVMAssemblerCLI.Parsing
 		}
 		public static short[] s2opc(string s, out int error)
 		{
-			if (s=="")
+			if (s==""||s==" ")
 			{
-				error = -1;
+				error = 0;
 				return new short[0];
 			}
 			if (opcodes.ContainsKey(s))

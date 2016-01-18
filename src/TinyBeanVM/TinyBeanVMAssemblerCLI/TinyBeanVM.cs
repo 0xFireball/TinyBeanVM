@@ -225,7 +225,7 @@ namespace TinyBeanVMAssemblerCLI
 			}
 			if (error!=0)
 			{
-				Console.WriteLine("Error on line {0}",line);
+				Console.WriteLine("Error on line {0} - '{1}'",line,c);
 			}
 			return rv.ToArray();
 		}
